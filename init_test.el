@@ -7,7 +7,7 @@
  '(custom-safe-themes
    '("f99318b4b4d8267a3ee447539ba18380ad788c22d0173fc0986a9b71fd866100" default))
  '(package-selected-packages
-   '(python-black flycheck dap-mode dap dap-python python-mode conda exec-path-from-shell dired-hide-dotfiles dired-open all-the-icons-dired dired-single shx eshell-git-prompt evil-nerd-commenter lsp-ivy lsp-treemacs company-box company lsp-latex lsp-ui lsp-mode pdf-tools auctex visual-fill-column org-bullets forge evil-magit magit counsel-projectile projectile ess evil-collection evil general doom-themes helpful ivy-rich which-key rainbow-delimiters night-owl-theme counsel command-log-mode use-package)))
+   '(company-auctex python-black flycheck dap-mode dap dap-python python-mode conda exec-path-from-shell dired-hide-dotfiles dired-open all-the-icons-dired dired-single shx eshell-git-prompt evil-nerd-commenter lsp-ivy lsp-treemacs company-box company lsp-latex lsp-ui lsp-mode pdf-tools auctex visual-fill-column forge evil-magit magit counsel-projectile projectile ess evil-collection evil general doom-themes helpful ivy-rich which-key rainbow-delimiters night-owl-theme counsel command-log-mode use-package)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -15,6 +15,9 @@
  ;; If there is more than one, they won't work right.
  )
  ; safe stuff
+
+;; Emacs is put on fullscreen by default
+(add-to-list 'default-frame-alist '(fullscreen . fullscreen))
 
 ;; Reset super, hyper and meta
 (setq mac-command-modifier 'meta) ; make cmd key do Meta
@@ -64,6 +67,7 @@
   (setq-local default-text-properties '(line-spacing 0.10 line-height 1.10)))
 (add-hook 'text-mode-hook 'set-bigger-spacing)
 (add-hook 'prog-mode-hook 'set-bigger-spacing)
+(add-hook 'org-mode-hook 'set-bigger-spacing)
 
 ; Font
 (set-face-attribute 'default nil :font "JetBrains Mono" :height 130)
@@ -131,6 +135,7 @@
   :bind (("M-x" . counsel-M-x)
 	 ("C-x b" . counsel-ibuffer)
 	 ("C-x C-f" . counsel-find-file)
+	 ("C-c t" .  counsel-org-tag)
 	 :map minibuffer-local-map
 	 ("C-r" . 'counsel-minibuffer-history))
   :config
@@ -322,52 +327,47 @@
   (setq org-log-done 'time)
   (setq org-log-intro-drawer t)
   (setq org-agenda-files
-	'("~/Casa/tasks-agenda.org"))
-  (setq org-src-preserve-indentation t))
-
-(setq org-todo-keywords
-      '((sequence "TODO(t)" "PRIORITY(p@/!)" "WAIT(w@/!)" "|" "DONE(d!)" "CANCELED(c@)")
-	(sequence "INTERESTING(i@)" "EXPLORING(e)" "|" "DONE(D!)" "ABANDONED(a@/!)")))
-
-(with-eval-after-load 'org-faces (dolist (face '((org-level-1 . 1.2)
-                  (org-level-2 . 1.1)
-                  (org-level-3 . 1.05)
-                  (org-level-4 . 1.0)
-                  (org-level-5 . 1.1)
-                  (org-level-6 . 1.1)
-                  (org-level-7 . 1.1)
-                  (org-level-8 . 1.1)))
-    (set-face-attribute (car face) nil :font "ETBembo" :weight 'semi-bold :height (cdr face))
-    (set-face-attribute 'org-block nil    :foreground nil :inherit 'fixed-pitch)
-    (set-face-attribute 'org-table nil    :inherit 'fixed-pitch)
-    (set-face-attribute 'org-formula nil  :inherit 'fixed-pitch)
-    (set-face-attribute 'org-code nil     :inherit '(shadow fixed-pitch))
-    (set-face-attribute 'org-table nil    :inherit '(shadow fixed-pitch))
-    (set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
-    (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
-    (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
-    (set-face-attribute 'org-checkbox nil  :inherit 'fixed-pitch)
-    (set-face-attribute 'line-number nil :inherit 'fixed-pitch)
-    (set-face-attribute 'line-number-current-line nil :inherit 'fixed-pitch)))
-
-(font-lock-add-keywords 'org-mode
-			'(("^ *\\([-]\\) "
-			    (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
-
-(defun efs/org-mode-visual-fill ()
-  (setq visual-fill-column-width 100
-        visual-fill-column-center-text t)
-  (visual-fill-column-mode 1))
-
-(use-package visual-fill-column
-  :hook (org-mode . efs/org-mode-visual-fill))
-  (setq org-refile-targets
-    '(("~/Casa/tasks.org" :maxlevel . 1)
-      ("~/Casa/archive.org" :maxlevel . 1)))
-
+	'("~/AGENDA.org"))
+  (setq org-src-fontify-natively t)
+  (setq org-fontify-done-headlines t)
+  (setq org-src-preserve-indentation t)
+  (setq org-indent-indentation-per-level 2)
+  (setq org-todo-keywords
+	'((sequence "TODO(t)" "PRIORITY(p!)" "WAIT(w@/!)" "|" "DONE(d!)" "CANCELED(c@)")
+	  (sequence "INTERESTING(i@)" "EXPLORING(e)" "|" "SEEN(s!)" "ABANDONED(a@)")))
+  (setq org-todo-keyword-faces
+	'(("TODO" . org-todo)
+	  ("PRIORITY" . "red")
+	  ("WAIT" . org-todo)
+	  ("DONE" . org-done)
+	  ("CANCELED" . org-done)
+	  ("INTERESTING" . (:foreground "green" :weight bold))
+	  ("EXPLORING" . (:foreground "green" :weight bold))
+	  ("SEEN" . org-done) ("ABANDONED" . org-done)))
+  (with-eval-after-load 'org-faces
+    (dolist
+      (face '((org-level-1 . 1.3)
+              (org-level-2 . 1.2)
+              (org-level-3 . 1.1)
+              (org-level-4 . 1.1)
+              (org-level-5 . 1.1)
+              (org-level-6 . 1.1)
+              (org-level-7 . 1.1)
+              (org-level-8 . 1.1)))
+      (set-face-attribute (car face) nil :font "ETBembo" :weight 'semi-bold :height (cdr face))
+      (set-face-attribute 'org-block nil    :foreground nil :inherit 'fixed-pitch)
+      (set-face-attribute 'org-table nil    :inherit 'fixed-pitch)
+      (set-face-attribute 'org-formula nil  :inherit 'fixed-pitch)
+      (set-face-attribute 'org-code nil     :inherit '(shadow fixed-pitch))
+      (set-face-attribute 'org-table nil    :inherit '(shadow fixed-pitch))
+      (set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
+      (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
+      (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
+      (set-face-attribute 'org-checkbox nil  :inherit 'fixed-pitch)
+      (set-face-attribute 'line-number nil :inherit 'fixed-pitch)
+      (set-face-attribute 'line-number-current-line nil :inherit 'fixed-pitch)))
   ;; Save Org buffers after refiling!
   (advice-add 'org-refile :after 'org-save-all-org-buffers)
-
   (setq org-tag-alist
     '(("@home" . ?H)
        ("@work" . ?W)
@@ -377,8 +377,8 @@
        ("@conference" . ?C)
        ("idea" . ?i)
        ("reading" . ?e)
+       ("eventually" . ?t)
        ("library" . ?l)))
-
   ;; Configure custom agenda views
   (setq org-agenda-custom-commands
    '(("d" "Dashboard"
@@ -451,7 +451,22 @@
 
       ("m" "Metrics Capture")
       ("mw" "Weight" table-line (file+headline "~/Casa/journal.org" "Weight")
-       "| %U | %^{Weight} | %^{Notes} |" :kill-buffer t)))
+       "| %U | %^{Weight} | %^{Notes} |" :kill-buffer t))))
+
+(font-lock-add-keywords 'org-mode
+			'(("^ *\\([-]\\) "
+			    (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
+
+(defun efs/org-mode-visual-fill ()
+  (setq visual-fill-column-width 115
+        visual-fill-column-center-text t)
+  (visual-fill-column-mode 1))
+
+(use-package visual-fill-column
+  :hook (org-mode . efs/org-mode-visual-fill))
+  (setq org-refile-targets
+    '(("~/AGENDA.org" :maxlevel . 1)))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                     language support and packages                         ;;
@@ -465,6 +480,7 @@
     (ipython . t)
     (python . t)
     (shell . t)))
+
 (setq org-confirm-babel-evaluate nil)
 ;;; display/update images in the buffer after I evaluate
 (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append)
