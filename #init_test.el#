@@ -327,7 +327,7 @@
 
 (setq org-todo-keywords
       '((sequence "TODO(t)" "PRIORITY(p@/!)" "WAIT(w@/!)" "|" "DONE(d!)" "CANCELED(c@)")
-	(sequence "INTERESTING(i@)" "EXPLORING(e)" "|" "DONE(D!)" "ABANDONED(a@/!)")))
+	(sequence "INTERESTING(i)" "EXPLORING(e)" "|" "DONE(D!)" "ABANDONED(a@/!)")))
 
 (with-eval-after-load 'org-faces (dolist (face '((org-level-1 . 1.2)
                   (org-level-2 . 1.1)
