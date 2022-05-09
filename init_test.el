@@ -74,7 +74,7 @@
 ;; Set the fixed pitch face
 (set-face-attribute 'fixed-pitch nil :font "JetBrains Mono" :height 130)
 ;; Set the variable pitch face
-(set-face-attribute 'variable-pitch nil :font "ETBembo" :height 150 :weight 'regular)
+(set-face-attribute 'variable-pitch nil :font "ETBembo" :height 160 :weight 'regular)
 ;; to define mode specific key-bindings
 (define-key emacs-lisp-mode-map (kbd "C-x M-t") 'counsel-load-Initialize)
 
@@ -331,10 +331,9 @@
   (setq org-src-fontify-natively t)
   (setq org-fontify-done-headlines t)
   (setq org-src-preserve-indentation t)
-  (setq org-indent-indentation-per-level 2)
   (setq org-todo-keywords
-	'((sequence "TODO(t)" "PRIORITY(p!)" "WAIT(w@/!)" "|" "DONE(d!)" "CANCELED(c@)")
-	  (sequence "INTERESTING(i@)" "EXPLORING(e)" "|" "SEEN(s!)" "ABANDONED(a@)")))
+	'((sequence "TODO(t)" "PRIORITY(p!)" "WAIT(w@/!)" "|" "DONE(d)" "CANCELED(c@)")
+	  (sequence "INTERESTING(i)" "EXPLORING(e)" "|" "SEEN(s)" "ABANDONED(a@)")))
   (setq org-todo-keyword-faces
 	'(("TODO" . org-todo)
 	  ("PRIORITY" . "red")
@@ -379,54 +378,6 @@
        ("reading" . ?e)
        ("eventually" . ?t)
        ("library" . ?l)))
-  ;; Configure custom agenda views
-  (setq org-agenda-custom-commands
-   '(("d" "Dashboard"
-     ((agenda "" ((org-deadline-warning-days 7)))
-      (todo "NEXT"
-        ((org-agenda-overriding-header "Next Tasks")))
-      (tags-todo "agenda/ACTIVE" ((org-agenda-overriding-header "Active Projects")))))
-
-    ("n" "Next Tasks"
-     ((todo "NEXT"
-        ((org-agenda-overriding-header "Next Tasks")))))
-
-    ("W" "Work Tasks" tags-todo "+work-email")
-
-    ;; Low-effort next actions
-    ("e" tags-todo "+TODO=\"NEXT\"+Effort<15&+Effort>0"
-     ((org-agenda-overriding-header "Low Effort Tasks")
-      (org-agenda-max-todos 20)
-      (org-agenda-files org-agenda-files)))
-
-    ("w" "Workflow Status"
-     ((todo "WAIT"
-            ((org-agenda-overriding-header "Waiting on External")
-             (org-agenda-files org-agenda-files)))
-      (todo "REVIEW"
-            ((org-agenda-overriding-header "In Review")
-             (org-agenda-files org-agenda-files)))
-      (todo "PLAN"
-            ((org-agenda-overriding-header "In Planning")
-             (org-agenda-todo-list-sublevels nil)
-             (org-agenda-files org-agenda-files)))
-      (todo "BACKLOG"
-            ((org-agenda-overriding-header "Project Backlog")
-             (org-agenda-todo-list-sublevels nil)
-             (org-agenda-files org-agenda-files)))
-      (todo "READY"
-            ((org-agenda-overriding-header "Ready for Work")
-             (org-agenda-files org-agenda-files)))
-      (todo "ACTIVE"
-            ((org-agenda-overriding-header "Active Projects")
-             (org-agenda-files org-agenda-files)))
-      (todo "COMPLETED"
-            ((org-agenda-overriding-header "Completed Projects")
-             (org-agenda-files org-agenda-files)))
-      (todo "CANC"
-            ((org-agenda-overriding-header "Cancelled Projects")
-             (org-agenda-files org-agenda-files)))))))
-
   (setq org-capture-templates
     `(("t" "Tasks / Projects")
       ("tt" "Task" entry (file+olp "~/Casa/tasks.org" "Inbox")
@@ -490,8 +441,8 @@
 (add-to-list 'org-structure-template-alist '("sh" . "src shell"))
 (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
 (add-to-list 'org-structure-template-alist '("py" . "src python"))
-(add-to-list 'org-structure-template-alist '("ipy" . "src python :results output"))
-(add-to-list 'org-structure-template-alist '("ipyd" . "src python :results raw drawer"))
+(add-to-list 'org-structure-template-alist '("ipy" . "src ipython :results output"))
+(add-to-list 'org-structure-template-alist '("ipyd" . "src ipython :results raw drawer"))
 
 ;;
 ;; Lsp mode, general settings
@@ -547,11 +498,11 @@
 ;;
 ;; Conda support
 ;;
-(use-package conda)
-(setq conda-env-home-directory "/opt/homebrew/Caskroom/miniforge/base")
+(use-package conda
+  :bind (("M-§" . conda-env-activate)))
+(setq conda-env-home-directory "/opt/homebrew/Caskroom/miniforge/base/")
 (conda-env-initialize-interactive-shells)
 (conda-env-initialize-eshell)
-(conda-env-autoactivate-mode t)
 
 ;;
 ;; General latex stuff
