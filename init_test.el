@@ -494,17 +494,19 @@
   (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
   :config
   (lsp-enable-which-key-integration t))
-(setq lsp-ui-doc-show-with-cursor t)
+
 
 (use-package lsp-ui
   :hook (lsp-mode . lsp-ui-mode)
   :custom
-  (lsp-ui-doc-position 'bottom))
+  (lsp-ui-doc-position 'bottom)
+  (setq lsp-ui-doc-show-with-cursor t))
 
 (use-package lsp-treemacs
   :after lsp)
 
-(use-package lsp-ivy)
+(use-package lsp-ivy
+  :after lsp)
 
 ;;
 ;; Company mode
@@ -528,24 +530,30 @@
 ;;
 (use-package flycheck
   :ensure t
-  :init (global-flycheck-mode))
-(use-package dap-mode)
+  :defer 0
+  :config (global-flycheck-mode))
+
+(use-package dap-mode
+  :commands dap-debug)
 
 ;;
 ;; Conda support
 ;;
 (use-package conda
-  :bind (("M-§" . conda-env-activate)))
-(setq conda-env-home-directory "/opt/homebrew/Caskroom/miniforge/base/")
-(conda-env-initialize-interactive-shells)
-(conda-env-initialize-eshell)
+  :bind (("M-§" . conda-env-activate))
+  :config
+  (setq conda-env-home-directory "/opt/homebrew/Caskroom/miniforge/base/")
+  (conda-env-initialize-interactive-shells)
+  (conda-env-initialize-eshell))
 
 ;;
 ;; General latex stuff
 ;;
-(use-package lsp-latex)
-(require 'lsp-latex)
-(setq lsp-latex-texlab-executable "/opt/homebrew/bin/texlab")
+(use-package lsp-latex
+  :mode "\\.tex\\'"
+  :config
+  (setq lsp-latex-texlab-executable "/opt/homebrew/bin/texlab"))
+
 ;; For bibtex
 (with-eval-after-load "tex-mode"
  (add-hook 'tex-mode-hook 'lsp)
@@ -572,6 +580,7 @@
 
 (use-package company-auctex
   :ensure t
+  :after auctex
   :config
   (company-auctex-init)
 )
@@ -611,13 +620,14 @@
 
 (use-package python-black
   :demand t
-  :after python
+  :after python-mode
   :hook (python-mode . python-black-on-save-mode-enable-dwim))
 
 ;;
 ;; R-lang
 ;;
 (use-package ess
+  :mode "\\.R\\'"
   :ensure t)
 (setq inferior-ess-r-program "/usr/local/bin/R")
 
@@ -625,3 +635,8 @@
 ;; Ipython
 ;;
 (use-package ob-ipython)
+
+
+;; lastly we reset the threshold
+(setq gc-cons-threshold (* 2 1000 1000))
+
