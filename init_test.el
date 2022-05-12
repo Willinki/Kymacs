@@ -45,8 +45,8 @@
 (unless (package-installed-p 'use-package)
   (package-install 'use-package))
 (require 'use-package)
-;;(setq use-package-always-ensure t)
-(setq use-package-verbose t)
+(setq use-package-always-ensure t)
+;;(setq use-package-verbose t)
 
 ;; Basic configuration option, startup page
 (setq inhibit-startup-message t)
@@ -148,11 +148,10 @@
 
 (use-package ivy-rich
   :init
-  (ivy-rich-mode 1)
-  :after ivy)
+  (ivy-rich-mode 1))
 
 (use-package helpful
-  :commands (helpful-callable helpful-variable helpful-command helpful-key)
+  ;:commands (helpful-callable helpful-variable helpful-command helpful-key)
   :custom
   (counsel-describe-function-function #'helpful-callable)
   (counsel-describe-variable-function #'helpful-variable)
