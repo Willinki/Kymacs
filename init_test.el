@@ -403,6 +403,7 @@
 	   "* PRIORITY %?\n %i" :kill-buffer t)
 	  ("r" "Reading" entry (file+olp "~/AGENDA.org" "Inbox")
 	   "* INTERESTING %?\n  %U\n  %a\n  %i" :kill-buffer t)))
+
   (setq org-archive-location  "~/.emacs.d/archive.org::* Archived tasks" ))
 
 (font-lock-add-keywords 'org-mode
