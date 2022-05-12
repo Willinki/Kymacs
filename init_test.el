@@ -45,7 +45,8 @@
 (unless (package-installed-p 'use-package)
   (package-install 'use-package))
 (require 'use-package)
-(setq use-package-always-ensure t)
+;;(setq use-package-always-ensure t)
+(setq use-package-verbose t)
 
 ;; Basic configuration option, startup page
 (setq inhibit-startup-message t)
@@ -95,7 +96,8 @@
 ;;
 ;; First appearance, ergonomics
 ;;
-(use-package swiper)
+(use-package swiper
+  :after ivy)
 
 (use-package ivy
   :diminish
@@ -146,10 +148,11 @@
 
 (use-package ivy-rich
   :init
-  (ivy-rich-mode 1))
+  (ivy-rich-mode 1)
+  :after ivy)
 
 (use-package helpful
-  ;:commands (helpful-callable helpful-variable helpful-command helpful-key)
+  :commands (helpful-callable helpful-variable helpful-command helpful-key)
   :custom
   (counsel-describe-function-function #'helpful-callable)
   (counsel-describe-variable-function #'helpful-variable)
@@ -222,16 +225,14 @@
   (setq projectile-switch-project-action #'projectile-dired))
 
 (use-package counsel-projectile
-  :config (counsel-projectile-mode))
+  :config (counsel-projectile-mode)
+  :after projectile)
 
 (use-package magit
   :commands (magit-status magit-get-current-branch)
   :custom
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 
-;; NOTE: Make sure to configure a GitHub token before using this package!
-;; - https://magit.vc/manual/forge/Token-Creation.html#Token-Creation
-;; - https://magit.vc/manual/ghub/Getting-Started.html#Getting-Started
 (use-package forge
   :after magit)
 
@@ -259,16 +260,19 @@
   :hook (eshell-first-time-mode . efs/configure-eshell))
 
 (use-package eshell-git-prompt
-    :config
-    (eshell-git-prompt-use-theme 'powerline))
+  :after eshell
+  :config
+  (eshell-git-prompt-use-theme 'powerline))
 
 (with-eval-after-load 'esh-opt
   (setq eshell-destroy-buffer-when-process-dies t)
   (setq eshell-visual-commands '("htop" "zsh" "vim")))
 
-(use-package exec-path-from-shell)
-(when (memq window-system '(mac ns x))
-  (exec-path-from-shell-initialize))
+(use-package exec-path-from-shell
+  :after eshell
+  :config
+  (when (memq window-system '(mac ns x))
+    (exec-path-from-shell-initialize)))
 
 ;;
 ;; Dired
@@ -285,15 +289,15 @@
       "l" 'dired-single-buffer)
   :custom ((dired-listing-switches "-agho --group-directories-first")))
 
-(use-package dired-single)
+(use-package dired-single
+  :after dired)
 
 (use-package all-the-icons-dired
   :hook (dired-mode . all-the-icons-dired-mode))
 
 (use-package dired-open
+  :after dired
   :config
-  ;; Doesn't work as expected!
-  ;;(add-to-list 'dired-open-functions #'dired-open-xdg t)
   (setq dired-open-extensions '(("png" . "feh")
                                 ("mkv" . "mpv"))))
 
