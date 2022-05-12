@@ -1,21 +1,24 @@
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(conda-anaconda-home "/opt/homebrew/Caskroom/miniforge/base")
- '(custom-safe-themes
-   '("f99318b4b4d8267a3ee447539ba18380ad788c22d0173fc0986a9b71fd866100" default))
- '(package-selected-packages
-   '(company-auctex python-black flycheck dap-mode dap dap-python python-mode conda exec-path-from-shell dired-hide-dotfiles dired-open all-the-icons-dired dired-single shx eshell-git-prompt evil-nerd-commenter lsp-ivy lsp-treemacs company-box company lsp-latex lsp-ui lsp-mode pdf-tools auctex visual-fill-column forge evil-magit magit counsel-projectile projectile ess evil-collection evil general doom-themes helpful ivy-rich which-key rainbow-delimiters night-owl-theme counsel command-log-mode use-package)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
- ; safe stuff
+;;; KYMACS
+;;; My own vanilla-emacs distro. @Willinki
 
+;;; Commentary:
+;;; based on the extremely helpful videos by https://systemcrafters.cc and other
+;;; resources found around the web.  This Emacs distribution is aimed at students
+;;; whose workflow includes programming and taking notes.  Also it is made for MacOS
+
+;;; Features:
+;;; * Most programming related packages: magit, projectile, conda, lsp-mode, etc...
+;;; * Enhanced vanilla Emacs experience (swiper, counsel, helpful, etc..) based on the
+;;; tutorials made by system crafters (Emacs from scratch).
+;;; * Language support: bash, lisp, python, c++, R, Julia, Latex
+;;; * Fully fledged org environment: agenda, capture, roam
+
+;;; Code:
+;; First, the threshold for garbage collection is increased
+(setq gc-cons-threshold (* 50 1000 1000))
+;; here we keep out custom variables
+(setq custom-file "~/.emacs.d/custom.el")
+(load custom-file)
 ;; Emacs is put on fullscreen by default
 (add-to-list 'default-frame-alist '(fullscreen . fullscreen))
 
