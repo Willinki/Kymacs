@@ -160,7 +160,7 @@
 ;; Themes and colors
 ;;
 (use-package doom-themes
-  :init (load-theme 'doom-palenight t)
+  :init (load-theme 'doom-city-lights t)
   :ensure t
   :config
   ;; Global settings (defaults)
@@ -171,7 +171,7 @@
   ;; Enable custom neotree theme (all-the-icons must be installed!)
   (doom-themes-neotree-config)
   ;; or for treemacs users
-  (setq doom-themes-treemacs-theme "doom-palenight") ; use "doom-colors" for less minimal icon theme
+  (setq doom-themes-treemacs-theme "doom-city-lights") ; use "doom-colors" for less minimal icon theme
   (doom-themes-treemacs-config)
   ;; Corrects (and improves) org-mode's native fontification.
   (doom-themes-org-config))
