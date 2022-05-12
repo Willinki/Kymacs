@@ -344,7 +344,8 @@
 	  ("CANCELED" . org-done)
 	  ("INTERESTING" . (:foreground "green" :weight bold))
 	  ("EXPLORING" . (:foreground "green" :weight bold))
-	  ("SEEN" . org-done) ("ABANDONED" . org-done)))
+	  ("SEEN" . org-done)
+	  ("ABANDONED" . org-done)))
   (with-eval-after-load 'org-faces
     (dolist
       (face '((org-level-1 . 1.3)
@@ -380,31 +381,29 @@
        ("reading" . ?e)
        ("eventually" . ?t)
        ("library" . ?l)))
+  
+  (setq org-agenda-custom-commands
+	'(("d" "Dashboard"
+	   ((agenda "" ((org-deadline-warning-days 40)))
+	    (todo "PRIORITY"
+		  ((org-agenda-overriding-header "Current priorities")))
+	    (todo "EXPLORING"
+		  ((org-agenda-overriding-header "Keep reading")))
+	    (todo "INTERESTING"
+		  ((org-agenda-overriding-header "Other Readings for you")))))))
+	  
   (setq org-capture-templates
-    `(("t" "Tasks / Projects")
-      ("tt" "Task" entry (file+olp "~/Casa/tasks.org" "Inbox")
-           "* TODO %?\n  %U\n  %a\n  %i" :empty-lines 1)
-
-      ("j" "Journal Entries")
-      ("jj" "Journal" entry
-           (file+olp+datetree "~/Casa/journal.org")
-           "\n* %<%I:%M %p> - Journal :journal:\n\n%?\n\n"
-           ;; ,(dw/read-file-as-string "~/Notes/Templates/Daily.org")
-           :clock-in :clock-resume
-           :empty-lines 1)
-      ("jm" "Meeting" entry
-           (file+olp+datetree "~/Casa/journal.org")
-           "* %<%I:%M %p> - %a :meetings:\n\n%?\n\n"
-           :clock-in :clock-resume
-           :empty-lines 1)
-
-      ("w" "Workflows")
-      ("we" "Checking Email" entry (file+olp+datetree "~/Casa/journal.org")
-           "* Checking Email :email:\n\n%?" :clock-in :clock-resume :empty-lines 1)
-
-      ("m" "Metrics Capture")
-      ("mw" "Weight" table-line (file+headline "~/Casa/journal.org" "Weight")
-       "| %U | %^{Weight} | %^{Notes} |" :kill-buffer t))))
+	`(("f" "File related todo" entry (file+olp "~/AGENDA.org" "Inbox")
+	   "* TODO %?\n  %U\n  %a\n  %i" :kill-buffer t)
+	  ("F" "File related priority" entry (file+olp "~/AGENDA.org" "Inbox")
+	   "* PRIORITY %?\n  %U\n  %a\n  %i" :kill-buffer t)
+	  ("t" "General task" entry (file+olp "~/AGENDA.org" "Inbox")
+	   "* TODO %?\n %i" :kill-buffer t)
+	  ("p" "General priority" entry (file+olp "~/AGENDA.org" "Inbox")
+	   "* PRIORITY %?\n %i" :kill-buffer t)
+	  ("r" "Reading" entry (file+olp "~/AGENDA.org" "Inbox")
+	   "* INTERESTING %?\n  %U\n  %a\n  %i" :kill-buffer t)))
+  (setq org-archive-location  "~/.emacs.d/archive.org::* Archived tasks" ))
 
 (font-lock-add-keywords 'org-mode
 			'(("^ *\\([-]\\) "
