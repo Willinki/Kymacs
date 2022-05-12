@@ -313,8 +313,35 @@
 ;;
 (use-package pdf-tools
   :ensure t
-  :init
+  :defer 1
+  :config
   (pdf-tools-install))
+
+;;
+;; Dashboard
+;;
+(use-package page-break-lines
+  :ensure t)
+(use-package dashboard
+  :ensure t
+  :after page-break-lines
+  :init
+  (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
+  (setq dashboard-agenda-release-buffers t)
+  (setq dashboard-banner-logo-title "Welcome to Kymacs")
+  (setq dashboard-items '((recents  . 5)
+                        (bookmarks . 5)
+                        (projects . 5)
+                        (agenda . 5)))
+  (setq dashboard-set-heading-icons t)
+  (setq dashboard-set-file-icons t)
+  (setq dashboard-set-navigator t)
+  (setq dashboard-week-agenda t)
+  (setq dashboard-center-content t)
+  (setq dashboard-startup-banner 'logo)
+  :config
+  (dashboard-setup-startup-hook))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                            org mode                                       ;;
