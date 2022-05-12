@@ -322,6 +322,8 @@
 (use-package org
   :hook (org-mode . dw/org-mode-setup)
   :config
+  (setq org-startup-with-inline-images t)
+  (setq org-image-actual-width (/ (display-pixel-width) 2))
   (setq org-ellipsis " ▾")
   (setq org-agenda-start-with-log-mode t)
   (setq org-log-done 'time)
