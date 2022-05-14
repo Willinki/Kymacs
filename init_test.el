@@ -233,7 +233,8 @@
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 
 (use-package forge
-  :after magit)
+  :after magit
+  :config (setq forge-add-default-bindings nil))
 
 ;;
 ;; Eshell
@@ -519,7 +520,8 @@
   '((emacs-lisp . t)
     (ipython . t)
     (python . t)
-    (shell . t)))
+    (shell . t)
+    (julia . t)))
 
 (setq org-confirm-babel-evaluate nil)
 ;;; display/update images in the buffer after I evaluate
@@ -531,6 +533,7 @@
 (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
 (add-to-list 'org-structure-template-alist '("py" . "src python"))
 (add-to-list 'org-structure-template-alist '("ipy" . "src ipython :results output"))
+(add-to-list 'org-structure-template-alist '("jl" . "src julia :results output"))
 (add-to-list 'org-structure-template-alist '("ipyd" . "src ipython :results raw drawer"))
 
 ;;
@@ -689,7 +692,30 @@
 ;;
 (use-package ob-ipython)
 
+;;
+;; Julia
+;;
+(use-package julia-mode
+  :ensure t
+  :defer 0)
+(use-package julia-repl
+  :ensure t
+  :hook (julia-mode . julia-repl-mode)
+  :init
+  (setenv "JULIA_NUM_THREADS" "8")
+  :config
+  ;; Set the terminal backend
+  (julia-repl-set-terminal-backend 'vterm)
+  ;; Keybindings for quickly sending code to the REPL
+  (define-key julia-repl-mode-map (kbd "<C-RET>") 'my/julia-repl-send-cell)
+  (define-key julia-repl-mode-map (kbd "<M-RET>") 'julia-repl-send-line)
+  (define-key julia-repl-mode-map (kbd "<S-return>") 'julia-repl-send-buffer))  
+(use-package lsp-julia
+  :config
+  (setq lsp-julia-default-environment "~/.julia/environments/v1.7"))
+(add-hook 'julia-mode-hook #'lsp-mode)
 
 ;; lastly we reset the threshold
 (setq gc-cons-threshold (* 2 1000 1000))
-
+;; we activate the base environment of conda
+(conda-env-activate "base")
