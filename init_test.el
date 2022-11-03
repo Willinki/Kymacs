@@ -11,7 +11,7 @@
 ;;; * Enhanced vanilla Emacs experience (swiper, counsel, helpful, etc..) based on the
 ;;; tutorials made by system crafters (Emacs from scratch).
 ;;; * Language support: bash, lisp, python, c++, R, Julia, Latex
-;;; * Fully fledged org environment: agenda, capture, roam
+;;; * Fully fledged org environment: agenda, capture, roam, babel
 
 ;;; Code:
 ;; First, the threshold for garbage collection is increased
@@ -21,7 +21,9 @@
 (load custom-file)
 ;; Emacs is put on fullscreen by default
 (add-to-list 'default-frame-alist '(fullscreen . fullscreen))
-
+;; This will not truncate lines
+(setq-default truncate-lines t)
+(setq-default truncate-partial-width-windows nil)
 ;; Reset super, hyper and meta
 (setq mac-command-modifier 'meta) ; make cmd key do Meta
 (setq mac-option-modifier 'super) ; make opt key do Super
@@ -78,7 +80,7 @@
 ;; Set the fixed pitch face
 (set-face-attribute 'fixed-pitch nil :font "JetBrains Mono" :height 130)
 ;; Set the variable pitch face
-(set-face-attribute 'variable-pitch nil :font "ETBembo" :height 160 :weight 'regular)
+(set-face-attribute 'variable-pitch nil :font "Source Sans Pro" :height 135 :weight 'regular)
 ;; to define mode specific key-bindings
 (define-key emacs-lisp-mode-map (kbd "C-x M-t") 'counsel-load-Initialize)
 
@@ -93,6 +95,22 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                     ADDITIONAL PACKAGES                                   ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; smooth scrolling also
+;;
+(use-package smooth-scrolling
+  :defer 0
+  :config
+  (smooth-scrolling-mode 1))
+
+;;
+;; golden ratio is useful to resize windows
+;;
+(use-package golden-ratio
+  :defer 0
+  :config
+  (add-to-list 'golden-ratio-extra-commands 'ace-window)
+  (golden-ratio-mode 1))
 ;;
 ;; First appearance, ergonomics
 ;;
@@ -119,6 +137,8 @@
 
 (use-package all-the-icons
   :if (display-graphic-p))
+(use-package all-the-icons-ivy
+  :init (add-hook 'after-init-hook 'all-the-icons-ivy-setup))
 
 (use-package doom-modeline
   :ensure t
@@ -160,6 +180,14 @@
   ([remap describe-command] . helpful-command)
   ([remap describe-variable] . counsel-describe-variable)
   ([remap describe-key] . helpful-key))
+
+;;
+;; Ace window to move between windows faster
+;;
+(use-package ace-window
+  :config
+  (global-set-key (kbd "M-o") 'ace-window)
+  (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
 
 ;;
 ;; Themes and colors
@@ -371,14 +399,12 @@
 
 (add-hook 'pdf-view-mode-hook 'bms/pdf-midnite-colour-schemes)
 
+
 ;;
 ;; Dashboard
 ;;
-(use-package page-break-lines
-  :ensure t)
 (use-package dashboard
   :ensure t
-  :after page-break-lines
   :init
   (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
   (setq dashboard-agenda-release-buffers t)
@@ -411,6 +437,8 @@
   :hook (org-mode . dw/org-mode-setup)
   :config
   (setq org-startup-with-inline-images t)
+  (setq python-indent-guess-indent-offset t)
+  (setq python-indent-guess-indent-offset-verbose nil)
   (setq org-image-actual-width (/ (display-pixel-width) 2))
   (setq org-ellipsis " ▾")
   (setq org-agenda-start-with-log-mode t)
@@ -418,7 +446,10 @@
   (setq org-log-intro-drawer t)
   (setq org-agenda-files
 	'("~/AGENDA.org"))
+  (setq org-cite-global-bibliography '("~/org-cite/global.bib"))
   (setq org-src-fontify-natively t)
+  (setq org-highlight-latex-and-related '("native" "latex"))
+  (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
   (setq org-fontify-done-headlines t)
   (setq org-src-preserve-indentation t)
   (setq org-todo-keywords
@@ -444,7 +475,7 @@
               (org-level-6 . 1.1)
               (org-level-7 . 1.1)
               (org-level-8 . 1.1)))
-      (set-face-attribute (car face) nil :font "ETBembo" :weight 'semi-bold :height (cdr face))
+      (set-face-attribute (car face) nil :font "Source Sans Pro" :weight 'semi-bold :height (cdr face))
       (set-face-attribute 'org-block nil    :foreground nil :inherit 'fixed-pitch)
       (set-face-attribute 'org-table nil    :inherit 'fixed-pitch)
       (set-face-attribute 'org-formula nil  :inherit 'fixed-pitch)
@@ -508,6 +539,23 @@
   (setq org-refile-targets
     '(("~/AGENDA.org" :maxlevel . 1)))
 
+;;
+;; Org roam
+;;
+(use-package org-roam
+  :ensure t
+  :init
+  (setq org-roam-v2-ack t)
+  :custom
+  (org-roam-directory "~/RoamNotes/")
+  (org-roam-completion-everywhere t)
+  :bind (("C-c n l" . org-roam-buffer-toggle)
+	 ("C-c n f" . org-roam-node-find)
+	 ("C-c n i" . org-roam-node-insert)
+	 :map org-mode-map
+	 ("C-M-i" . completion-at-point))
+  :config
+  (org-roam-setup))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                     language support and packages                         ;;
@@ -559,7 +607,8 @@
   (setq lsp-ui-doc-show-with-cursor t))
 
 (use-package lsp-treemacs
-  :after lsp)
+  :after lsp:
+  :custom (setq doom-themes-treemacs-enable-variable-pitch nil))
 
 (use-package lsp-ivy
   :after lsp)
@@ -658,6 +707,12 @@
             visual-fill-column-center-text t
 	    visual-fill-column-enable-sensible-window-split t)
       (visual-fill-column-mode 0))
+
+;;
+;; Yaml
+;;
+(use-package yaml-mode
+  :ensure t)
 
 ;;
 ;; Python
