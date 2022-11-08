@@ -431,6 +431,7 @@
   (variable-pitch-mode 1)
   (auto-fill-mode 0)
   (visual-line-mode 1)
+  (setq org-startup-indented t)
   (setq evil-auto-indent nil))
 
 (use-package org
@@ -449,7 +450,7 @@
   (setq org-cite-global-bibliography '("~/org-cite/global.bib"))
   (setq org-src-fontify-natively t)
   (setq org-highlight-latex-and-related '("native" "latex"))
-  (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
+  (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5))
   (setq org-fontify-done-headlines t)
   (setq org-src-preserve-indentation t)
   (setq org-todo-keywords
@@ -768,7 +769,9 @@
 (use-package lsp-julia
   :config
   (setq lsp-julia-default-environment "~/.julia/environments/v1.7"))
-(add-hook 'julia-mode-hook #'lsp-mode)
+(use-package julia-snail
+  :ensure t
+  :hook (julia-mode . julia-snail-mode))
 
 ;; lastly we reset the threshold
 (setq gc-cons-threshold (* 2 1000 1000))
