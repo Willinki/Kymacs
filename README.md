@@ -1,3 +1,7 @@
+<p align="center">
+<img src="https://upload.wikimedia.org/wikipedia/commons/1/13/Cactuar.png" width=20% height=20%>
+</p>
+
 # Kymacs
 
 ### My own vanilla-emacs distro.
