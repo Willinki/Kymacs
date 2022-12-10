@@ -751,13 +751,17 @@
 ;;
 ;; Julia
 ;;
+(defun julia-mode-hook ()
+  (lsp-deferred)
+  (julia-snail-mode))
+
 (use-package julia-mode
   :ensure t
-  :defer 0)
+  :hook (julia-mode . julia-mode-hook))
 
 (use-package julia-repl
   :ensure t
-  ;:hook (julia-mode . julia-repl-mode)
+  :hook (julia-mode . julia-repl-mode)
   :init
   (setenv "JULIA_NUM_THREADS" "8")
   :config
@@ -768,16 +772,17 @@
   (define-key julia-repl-mode-map (kbd "<M-RET>") 'julia-repl-send-line)
   (define-key julia-repl-mode-map (kbd "<S-return>") 'julia-repl-send-buffer))  
 
+(setq lsp-julia-package-dir nil)
 (use-package lsp-julia
   :ensure t
   :config
-  (setq lsp-julia-default-environment "~/.julia/environments/v1.8"))
+  (setq lsp-julia-default-environment "~/.julia/environments/v1.8")
+  (setq lsp-julia-default-depot "~/.julia/"))
 
 (use-package julia-snail
-  :ensure t
-  :hook (julia-mode . julia-snail-mode))
+  :ensure t)
 
 ;; lastly we reset the threshold
 (setq gc-cons-threshold (* 2 1000 1000))
 ;; we activate the base environment of conda
-;; (conda-env-activate "base")
+(conda-env-activate "base")
