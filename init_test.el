@@ -422,6 +422,13 @@
   :config
   (dashboard-setup-startup-hook))
 
+;;
+;;
+;;
+(use-package solaire-mode
+  :ensure t)
+(solaire-global-mode +1)
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                            org mode                                       ;;
@@ -557,6 +564,14 @@
 	 ("C-M-i" . completion-at-point))
   :config
   (org-roam-setup))
+
+;;
+;; Org reveal for presentations
+;;
+(use-package org-re-reveal
+  :config
+  (setq org-re-reveal-root "file:///Users/willinki/GIT/reveal.js")
+  (setq org-re-reveal-hlevel 2))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                     language support and packages                         ;;
