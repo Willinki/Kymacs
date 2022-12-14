@@ -439,7 +439,8 @@
   (auto-fill-mode 0)
   (visual-line-mode 1)
   (setq org-startup-indented t)
-  (setq evil-auto-indent nil))
+  (setq evil-auto-indent nil)
+  (org-modern-mode))
 
 (use-package org
   :hook (org-mode . dw/org-mode-setup)
@@ -547,6 +548,16 @@
   (setq org-refile-targets
     '(("~/AGENDA.org" :maxlevel . 1)))
 
+(use-package org-modern
+  :config
+  (setq org-auto-align-tags nil)
+  (setq org-tags-column 0)
+  (setq org-catch-invisible-edits 'show-and-error)
+  (setq org-special-ctrl-a/e t)
+  (setq org-insert-heading-respect-content t)
+  (setq org-hide-emphasis-markers t)
+  (setq org-pretty-entities t)
+  (setq org-ellipsis "…"))
 ;;
 ;; Org roam
 ;;
