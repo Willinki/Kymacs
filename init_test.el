@@ -423,11 +423,27 @@
   (dashboard-setup-startup-hook))
 
 ;;
-;;
+;; solaire mode
 ;;
 (use-package solaire-mode
   :ensure t)
 (solaire-global-mode +1)
+
+;;
+;; pomidor
+;;
+(use-package pomidor
+  :ensure t
+  :bind (("<f12>" . pomidor))
+  :config (setq pomidor-sound-tick nil
+                pomidor-sound-tack nil)
+  :hook (pomidor-mode . (lambda ()
+                          (display-line-numbers-mode -1) ; Emacs 26.1+
+                          (setq left-fringe-width 0 right-fringe-width 0)
+                          (setq left-margin-width 2 right-margin-width 0)
+                          ;; force fringe update
+                          (set-window-buffer nil (current-buffer)))))
+(add-to-list 'evil-emacs-state-modes 'pomidor-mode)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
