@@ -24,6 +24,7 @@
 ;; This will not truncate lines
 (setq-default truncate-lines t)
 (setq-default truncate-partial-width-windows nil)
+(setq-default compilation-ask-about-save nil)
 ;; Reset super, hyper and meta
 (setq mac-command-modifier 'meta) ; make cmd key do Meta
 (setq mac-option-modifier 'super) ; make opt key do Super
@@ -76,9 +77,9 @@
 (add-hook 'org-mode-hook 'set-bigger-spacing)
 
 ; Font
-(set-face-attribute 'default nil :font "JetBrains Mono" :height 130)
+(set-face-attribute 'default nil :font "Roboto Mono" :height 130)
 ;; Set the fixed pitch face
-(set-face-attribute 'fixed-pitch nil :font "JetBrains Mono" :height 130)
+(set-face-attribute 'fixed-pitch nil :font "Roboto Mono" :height 130)
 ;; Set the variable pitch face
 (set-face-attribute 'variable-pitch nil :font "Source Sans Pro" :height 135 :weight 'regular)
 ;; to define mode specific key-bindings
@@ -204,7 +205,7 @@
   ;; Enable custom neotree theme (all-the-icons must be installed!)
   (doom-themes-neotree-config)
   ;; or for treemacs users
-  (setq doom-themes-treemacs-theme "doom-city-lights") ; use "doom-colors" for less minimal icon theme
+  (setq doom-themes-treemacs-theme "doom-colors") ; use "doom-colors" for less minimal icon theme
   (doom-themes-treemacs-config)
   ;; Corrects (and improves) org-mode's native fontification.
   (doom-themes-org-config))
@@ -612,6 +613,7 @@
     (ipython . t)
     (python . t)
     (shell . t)
+    (R . t)
     (julia . t)))
 
 (setq org-confirm-babel-evaluate nil)
@@ -623,6 +625,7 @@
 (add-to-list 'org-structure-template-alist '("sh" . "src shell"))
 (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
 (add-to-list 'org-structure-template-alist '("py" . "src python"))
+(add-to-list 'org-structure-template-alist '("R" . "src R :results output"))
 (add-to-list 'org-structure-template-alist '("ipy" . "src ipython :results output"))
 (add-to-list 'org-structure-template-alist '("jl" . "src julia :results output"))
 (add-to-list 'org-structure-template-alist '("ipyd" . "src ipython :results raw drawer"))
@@ -640,14 +643,27 @@
   :init
   (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
   :config
-  (lsp-enable-which-key-integration t))
-
+  (lsp-enable-which-key-integration t)
+  :custom
+  (lsp-rust-analyzer-cargo-watch-command "clippy")
+  (lsp-eldoc-render-all t)
+  (lsp-idle-delay 0.6)
+  (lsp-rust-analyzer-server-display-inlay-hints t)
+  (lsp-rust-analyzer-display-lifetime-elision-hints-enable "skip_trivial")
+  (lsp-rust-analyzer-display-chaining-hints t)
+  (lsp-rust-analyzer-display-lifetime-elision-hints-use-parameter-names nil)
+  (lsp-rust-analyzer-display-closure-return-type-hints t)
+  (lsp-rust-analyzer-display-parameter-hints nil)
+  (lsp-rust-analyzer-display-reborrow-hints nil))
 
 (use-package lsp-ui
   :hook (lsp-mode . lsp-ui-mode)
   :custom
-  (lsp-ui-doc-position 'bottom)
-  (setq lsp-ui-doc-show-with-cursor t))
+  (lsp-ui-doc-position 'at-point)
+  (setq lsp-ui-doc-show-with-cursor t)
+  (lsp-ui-peek-always-show t)
+  (lsp-ui-sideline-show-hover t)
+  (lsp-ui-doc-enable nil))
 
 (use-package lsp-treemacs
   :after lsp:
@@ -682,7 +698,23 @@
   :config (global-flycheck-mode))
 
 (use-package dap-mode
-  :commands dap-debug)
+  :defer 0
+  :commands dap-debug
+  :config
+  (dap-ui-mode)
+  (dap-ui-controls-mode 1)
+  (require 'dap-lldb)
+  (require 'dap-gdb-lldb)
+  ;; installs .extension/vscode
+  (dap-gdb-lldb-setup)
+  (dap-register-debug-template
+   "Rust::LLDB Run Configuration"
+   (list :type "lldb"
+         :request "launch"
+         :name "LLDB::Run"
+	 :gdbpath "rust-lldb"
+         :target nil
+         :cwd nil)))
 
 ;;
 ;; Conda support
@@ -823,6 +855,24 @@
 
 (use-package julia-snail
   :ensure t)
+
+;;
+;; some Rust
+;;
+(use-package rustic
+  :ensure
+  :bind (:map rustic-mode-map
+              ("M-j" . lsp-ui-imenu)
+              ("M-?" . lsp-find-references)
+              ("C-c C-c l" . flycheck-list-errors)
+              ("C-c C-c a" . lsp-execute-code-action)
+              ("C-c C-c r" . lsp-rename)
+              ("C-c C-c q" . lsp-workspace-restart)
+              ("C-c C-c Q" . lsp-workspace-shutdown)
+              ("C-c C-c s" . lsp-rust-analyzer-status))
+  :config
+  (rustic-analyzer-command '("rustup" "run" "stable" "rust-analyzer"))
+  (setq rustic-format-on-save t))
 
 ;; lastly we reset the threshold
 (setq gc-cons-threshold (* 2 1000 1000))
