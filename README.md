@@ -12,7 +12,7 @@ whose workflow includes programming and taking (scientific) notes.  Also it is m
 
 ## Features:
 * Most programming related packages: magit, projectile, conda, lsp-mode, etc...
-* Enhanced vanilla Emacs experience (swiper, counsel, helpful, etc..) based on the
-  tutorials made by system crafters (Emacs from scratch).
+* Enhanced vanilla Emacs experience (cape, consult, marginalia, embark, orderless, vertico) based on the
+  tutorials made by system crafters (Emacs from scratch) and on [crafted-emacs](https://github.com/SystemCrafters/crafted-emacs)
 * Language support: bash, lisp, python, c++, R, Julia, Latex
 * Fully fledged org environment: agenda, capture, roam, babel
