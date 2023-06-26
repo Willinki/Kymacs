@@ -19,7 +19,7 @@
 ;; Turn on line numbers
 (column-number-mode)
 (global-display-line-numbers-mode t)
-(dolist 
+(dolist
   (mode '(org-mode-hook term-mode-hook eshell-mode-hook))
   (add-hook mode (lambda() (display-line-numbers-mode 0))))
 
@@ -28,7 +28,7 @@
 ;; Set the fixed pitch face
 (set-face-attribute 'fixed-pitch nil :font "Roboto Mono" :height 130)
 ;; Set the variable pitch face
-(set-face-attribute 'variable-pitch nil :font "Source Sans Pro" :height 135 :weight 'regular)
+(set-face-attribute 'variable-pitch nil :font "Source Sans Pro" :height 150 :weight 'regular)
 
 ;; icons (does not work for some reason)
 (use-package all-the-icons)
@@ -39,14 +39,14 @@
   :ensure t
   :config
   ;; Global settings (defaults)
-  (setq doom-themes-enable-bold t    
-        doom-themes-enable-italic t) 
+  (setq doom-themes-enable-bold t
+        doom-themes-enable-italic t)
   ;; Enable flashing mode-line on errors
   (doom-themes-visual-bell-config)
   ;; Enable custom neotree theme (all-the-icons must be installed!)
   (doom-themes-neotree-config)
   ;; or for treemacs users
-  (setq doom-themes-treemacs-theme "doom-colors") 
+  (setq doom-themes-treemacs-theme "doom-colors")
   (doom-themes-treemacs-config)
   ;; Corrects (and improves) org-mode's native fontification.
   (doom-themes-org-config))
@@ -62,4 +62,4 @@
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
 
 (provide 'general-appearance)
-;; 0-1-general-appearance.el ends here 
+;; 0-1-general-appearance.el ends here
