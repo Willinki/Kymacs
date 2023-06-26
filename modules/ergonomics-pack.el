@@ -1,16 +1,13 @@
 ;; ergonomics-pack.el -*- lexical-binding: t; -*-
-(use-package smooth-scrolling
-  :defer 0
-  :config
-  (smooth-scrolling-mode 1))
 
 ;; this removes unwanted behaviour of files
 (use-package no-littering)
 
 ;; solaire mode
 (use-package solaire-mode
-  :ensure t)
-(solaire-global-mode +1)
+  :ensure t
+  :config
+  (solaire-global-mode +1))
 
 ;; vterm as default terminal
 (use-package vterm
@@ -31,7 +28,8 @@
   (evil-collection-define-key 'normal 'dired-mode-map
       "h" 'dired-single-up-directory
       "l" 'dired-single-buffer)
-  :custom ((dired-listing-switches "-agho --group-directories-first")))
+  :custom
+  ((dired-listing-switches "-agho --group-directories-first")))
 
 (use-package dired-single
   :after dired)
