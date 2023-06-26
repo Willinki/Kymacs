@@ -31,6 +31,7 @@
 (require 'evil-setup)
 (require 'completion-pack)
 (require 'project-pack)
+(require 'orgmode-pack)
 
 ;; resetting garbage threshold
 (setq gc-cons-threshold (* 2 1000 1000))
