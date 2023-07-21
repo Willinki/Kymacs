@@ -33,5 +33,6 @@
   :group 'crafted-latex
   :type 'boolean)
 
-
+;; Hooks
+(add-hook 'doc-view-mode-hook 'auto-revert-mode)
 ;; latex-pack.el ends here
