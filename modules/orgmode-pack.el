@@ -32,6 +32,7 @@
   (setq org-agenda-current-time-string
 	"⭠ now ─────────────────────────────────────────────────")
   (setq org-directory "~/Documents/org")
+  (setq org-cite-global-bibliography (list "~/Documents/org/biblio.bib"))
   (setq org-agenda-files (list "inbox.org" "agenda.org"))
   (setq org-archive-location  "~/.emacs.d/archive.org::* Archived tasks" )
   (setq org-todo-keywords
@@ -123,9 +124,8 @@
   :init
   (setq org-journal-prefix-key "C-c j ")
   :config
-  (setq org-journal-dir "~/org/journal/"
+  (setq org-journal-dir "~/Documents/org/journal/"
         org-journal-date-format "%A, %d %B %Y"))
-
 
 (define-key global-map (kbd "C-c i") 'org-capture)
 (define-key global-map (kbd "C-c a") 'org-agenda)
