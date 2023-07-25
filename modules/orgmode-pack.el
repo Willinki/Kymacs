@@ -19,6 +19,8 @@
 	  (todo   . " ")
 	  (tags   . " %i %-12:c")
 	  (search . " %i %-12:c")))
+  (setq org-highlight-latex-and-related '("native" "latex"))
+  (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5))
   (setq org-agenda-start-with-log-mode t)
   (setq org-log-done 'time)
   (setq org-log-intro-drawer t)
@@ -129,6 +131,24 @@
 
 (define-key global-map (kbd "C-c i") 'org-capture)
 (define-key global-map (kbd "C-c a") 'org-agenda)
+
+;;
+;; org babel
+;;
+(org-babel-do-load-languages
+  'org-babel-load-languages
+  '((emacs-lisp . t)
+    (python . t)))
+(setq org-confirm-babel-evaluate nil)
+;;; display/update images in the buffer after I evaluate
+(add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append)
+
+;;
+;; org tempo
+;;
+(require 'org-tempo)
+(add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
+(add-to-list 'org-structure-template-alist '("py" . "src python"))
 
 (provide 'orgmode-pack)
 ;; orgmode-pack.el ends here
