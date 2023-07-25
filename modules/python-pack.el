@@ -50,9 +50,6 @@
 (use-package blacken
   :ensure t)
 
-(use-package eglot
-  :ensure t)
-
 (use-package numpydoc
   :ensure t
   :config (setq numpydoc-template-long nil)
@@ -64,11 +61,6 @@
 
 (use-package auto-virtualenv
   :ensure t)
-
-(use-package flycheck
-  :ensure t
-  :defer 0
-  :config (global-flycheck-mode))
 
 ;; Hooks (only way to preserve order as far as i know)
 (add-hook 'python-mode-hook 'pyvenv-mode)
