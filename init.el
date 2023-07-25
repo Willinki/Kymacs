@@ -33,6 +33,7 @@
 (require 'project-pack)
 (require 'orgmode-pack)
 (require 'python-pack)
+(require 'julia-pack)
 (require 'treemacs-pack)
 
 ;; resetting garbage threshold
