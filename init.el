@@ -33,8 +33,9 @@
 (require 'project-pack)
 (require 'orgmode-pack)
 (require 'python-pack)
+(require 'julia-pack)
+(require 'treemacs-pack)
 
 ;; resetting garbage threshold
 (setq gc-cons-threshold (* 2 1000 1000))
-
 ;; init.el ends here

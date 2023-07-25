@@ -1,7 +1,7 @@
 ;; 0-startup-settings.el -*- lexical-binding:t; -*-
 
 ;; Commentary:
-;; Just some functionality to be set at startup, not appearance related 
+;; Just some functionality to be set at startup, not appearance related
 ;;
 
 ;; here we keep out custom variables
@@ -15,10 +15,11 @@
 ;; Set backup files in another directory
 (setq backup-directory-alist `(("." . "~/.emacs.d/saves/")))
 (setq backup-by-copying t)
+(add-to-list 'exec-path "/opt/homebrew/bin/")
 (setq delete-old-versions t
   kept-new-versions 6
   kept-old-versions 2
   version-control t)
 
 (provide 'startup-settings)
-;; 0-startup-settings.el ends here 
+;; 0-startup-settings.el ends here

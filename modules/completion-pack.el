@@ -281,5 +281,13 @@
   :config
   (setq which-key-idle-delay 0.5))
 
+(use-package eglot
+  :ensure t)
+
+(use-package flycheck
+  :ensure t
+  :defer 0
+  :config (global-flycheck-mode))
+
 (provide 'completion-pack)
 ;; completion-pack.el ends here
