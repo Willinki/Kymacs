@@ -6,7 +6,7 @@
 
 ### My own vanilla-emacs distro.
 
-Based on the extremely helpful videos by https://systemcrafters.cc and other
+Based on the extremely helpful videos by [System crafters](https://systemcrafters.cc) and other
 resources found around the web.  This Emacs distribution is aimed at students
 whose workflow includes programming and taking (scientific) notes.  Also it is made for MacOS.
 
@@ -23,4 +23,5 @@ Also I've been fascinated by the work of [@rougier](https://github.com/rougier),
 
 ## To do:
 * Email support
-* Rust support
+* Minimal browser support
+* Rust, C++, zsh support
