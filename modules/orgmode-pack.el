@@ -16,7 +16,7 @@
   (setq org-ellipsis " ▾")
   (setq org-agenda-prefix-format
 	'((agenda . " %i %-12:c%?-12t% s")
-	  (todo   . " ")
+	  (todo   . "  %b %i %-12:c")
 	  (tags   . " %i %-12:c")
 	  (search . " %i %-12:c")))
   (setq org-highlight-latex-and-related '("native" "latex"))
@@ -35,7 +35,7 @@
 	"⭠ now ─────────────────────────────────────────────────")
   (setq org-directory "~/Documents/org")
   (setq org-cite-global-bibliography (list "~/Documents/org/biblio.bib"))
-  (setq org-agenda-files (list "inbox.org" "agenda.org"))
+  (setq org-agenda-files (list "inbox.org" "agenda.org" "projects.org"))
   (setq org-archive-location  "~/.emacs.d/archive.org::* Archived tasks" )
   (setq org-todo-keywords
 	'((sequence "TODO(t)" "PRIORITY(p!)" "WAIT(w@/!)" "|" "DONE(d)" "CANCELED(c@)")
@@ -110,6 +110,7 @@
   :hook (org-mode . efs/org-mode-visual-fill))
   (setq org-refile-targets
 	'(("~/Documents/org/inbox.org" :maxlevel . 1)
+	  ("~/Documents/org/projects.org" :maxlevel . 1)
 	  ("~/Documents/org/agenda.org" :maxlevel . 1)
 	  ("~/Documents/org/archive.org" :maxlevel . 1)
 	  ("~/Documents/org/notes.org" :maxlevel . 1)))
