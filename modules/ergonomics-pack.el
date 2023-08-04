@@ -34,9 +34,6 @@
 (use-package dired-single
   :after dired)
 
-(use-package all-the-icons-dired
-  :hook (dired-mode . all-the-icons-dired-mode))
-
 (use-package dired-open
   :after dired
   :config
