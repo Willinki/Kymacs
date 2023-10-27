@@ -35,7 +35,8 @@
 
 ;; Themes and colors
 (use-package doom-themes
-  :init (load-theme 'doom-city-lights t)
+;;  :init (load-theme 'doom-solarized-light t)
+  :init (load-theme 'doom-solarized-light t)
   :ensure t
   :config
   ;; Global settings (defaults)

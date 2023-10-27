@@ -17,6 +17,18 @@
   (setq vterm-shell "zsh")
   (setq vterm-max-scrollback 10000))
 
+;; mini-buffer as rofi
+(use-package mini-frame
+  :ensure t
+  :init
+  (mini-frame-mode)
+  :defer 0)
+(custom-set-variables
+ '(mini-frame-show-parameters
+   '((top . 0.3)
+     (width . 0.5)
+     (left . 0.5))))
+
 ;; some options for dired
 (use-package dired
   :ensure nil
@@ -46,6 +58,10 @@
   (evil-collection-define-key 'normal 'dired-mode-map
     "H" 'dired-hide-dotfiles-mode))
 (setq delete-by-moving-to-trash t)
+
+(setq scroll-step 1)
+(setq scroll-conservatively 10000)
+(setq auto-window-vscroll nil)
 
 
 (provide 'ergonomics-pack)
