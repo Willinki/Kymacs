@@ -14,4 +14,4 @@
 (setq use-package-always-ensure t)
 
 (provide 'package-setup)
-;; package-setup.el ends here 
+;; package-setup.el ends here

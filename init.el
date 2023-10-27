@@ -32,6 +32,7 @@
 (require 'completion-pack)
 (require 'project-pack)
 (require 'orgmode-pack)
+(require 'debug-pack)
 (require 'python-pack)
 (require 'julia-pack)
 (require 'treemacs-pack)
