@@ -52,12 +52,14 @@
   ;; Corrects (and improves) org-mode's native fontification.
   (doom-themes-org-config))
 
-(use-package moody
-  :config
-  (setq x-underline-at-descent-line t)
-  (moody-replace-mode-line-buffer-identification)
-  (moody-replace-vc-mode)
-  (moody-replace-eldoc-minibuffer-message-function))
+(use-package doom-modeline
+  :ensure t
+  :init (doom-modeline-mode 1)
+  :custom ((doom-modeline-height 30)
+	   (doom-modeline-major-mode-icon t)))
+(setq doom-modeline-icon t)
+(setq doom-modeline-buffer-file-name-style 'relative-from-project)
+
 
 (use-package rainbow-delimiters
   :hook
