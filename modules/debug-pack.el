@@ -12,8 +12,7 @@
 ;;; Code:
 
 (use-package realgud
-  :ensure t
-  :defer 0)
+  :ensure t)
 
 (provide 'debug-pack)
 ;;; debug-pack.el ends here

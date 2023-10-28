@@ -25,8 +25,8 @@
   :defer 0)
 (custom-set-variables
  '(mini-frame-show-parameters
-   '((top . 0.3)
-     (width . 0.5)
+   '((top . 0.35)
+     (width . 0.6)
      (left . 0.5))))
 
 ;; some options for dired
