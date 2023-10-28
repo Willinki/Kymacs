@@ -284,6 +284,16 @@
 (use-package eglot
   :ensure t)
 
+(use-package yasnippet
+  :ensure t
+  :defer 0
+  :config (yas-reload-all)
+  :hook
+  (prog-mode . yas-minor-mode))
+
+(use-package yasnippet-snippets
+  :after yasnippet)
+
 (use-package flycheck
   :ensure t
   :defer 0
