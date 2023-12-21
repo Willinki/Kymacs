@@ -36,6 +36,7 @@
 (require 'html-pack)
 (require 'python-pack)
 (require 'julia-pack)
+(require 'rust-pack)
 (require 'treemacs-pack)
 
 ;; resetting garbage threshold
